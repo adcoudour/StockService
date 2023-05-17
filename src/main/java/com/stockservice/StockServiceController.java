@@ -16,9 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class StockServiceController {
     @GetMapping("/stock")
-	public String index() {
-		return "Stock";
+	public String index() { 
+            return "stock";
 	}
+        
         
     /**
      * Cette méthode est appelé quand on a besoin de connaître le stock d'un livre.Une exception est levé si le livre récupéré est null.

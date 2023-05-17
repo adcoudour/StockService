@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 public class StockBook {
     public StockBook() {
     }
+    
     /**
      * Récupère la quantité en fonction d'un livre
      * @param isbn identifiant du livre
@@ -41,10 +42,10 @@ public class StockBook {
                 stock = rs.getInt(1);
             }
             conn.close();
+            return ResponseEntity.ok(stock);
         } catch (SQLException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(isbn);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage()+isbn);
         }
-        return ResponseEntity.ok(stock);
     }
     
     /**
