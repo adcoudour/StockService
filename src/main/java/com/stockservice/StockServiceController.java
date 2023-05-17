@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
- * @author ASUS
+ * @author adcoudour
  */
 @RestController
 public class StockServiceController {
@@ -23,14 +23,12 @@ public class StockServiceController {
     /**
      * Cette méthode est appelé quand on a besoin de connaître le stock d'un livre.Une exception est levé si le livre récupéré est null.
      * @param isbn identifiant du livre
-     * @param corr Id de corrélation composé de isbn et account
      * @return entier correspondant au nombre de livre pour l'isbn
      */
-    @GetMapping("/isbn/{isbn}/corr/{corr}")
-    public ResponseEntity<Object> getStockRequest(@PathVariable String isbn,@PathVariable String corr) { 
+    @GetMapping("/get/{isbn}")
+    public ResponseEntity<Object> getStockRequest(@PathVariable String isbn) { 
         StockBook stockbook = new StockBook();
-        ResponseEntity<Object> resp = stockbook.getStockDataBase(isbn);
-        return resp;
+        return stockbook.getStockDataBase(isbn);
     }
     
     /**
@@ -39,11 +37,10 @@ public class StockServiceController {
      * @param quantity
      * @return
      */
-    @GetMapping("/add/isbn/{isbn}/quantity/{quantity}")
+    @GetMapping("/add/{isbn}/{quantity}")
     public ResponseEntity<Object> AddStockRequest(@PathVariable String isbn,@PathVariable int quantity){
         StockBook stockbook = new StockBook();
-        ResponseEntity<Object> resp = stockbook.addDataBase(isbn, quantity);
-        return resp;
+        return stockbook.addDataBase(isbn, quantity);
     }
     
     /**
@@ -52,10 +49,9 @@ public class StockServiceController {
      * @param quantity
      * @return 
      */
-    @GetMapping("/remove/isbn/{isbn}/quantity/{quantity}")
+    @GetMapping("/remove/{isbn}/{quantity}")
     public ResponseEntity<Object> RemoveStockRequest(@PathVariable String isbn,@PathVariable int quantity){
         StockBook stockbook = new StockBook();
-        ResponseEntity<Object> resp = stockbook.removeDataBase(isbn, quantity);
-        return resp;
+        return stockbook.removeDataBase(isbn, quantity);
     }
 }

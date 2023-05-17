@@ -8,8 +8,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- *
- * @author ASUS
+ * Classe permettant de se connecter à la base de donnée postGres stocké sur Héroku
+ * @author adcoudour
  */
 public class ConnectionManager {
     public ConnectionManager() {

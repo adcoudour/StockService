@@ -13,13 +13,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 /**
- *
- * @author ASUS
+ * Classe qui permet de réaliser toutes les requêtes du stockBook.
+ * @author adcoudour
  */
 public class StockBook {
     public StockBook() {
     }
-    
+    /**
+     * Récupère la quantité en fonction d'un livre
+     * @param isbn identifiant du livre
+     * @return ResponseEntity contenant si la fonction à été une réussite où non.
+     */
     public ResponseEntity<Object> getStockDataBase(String isbn){
         int stock = 0;
          try {
@@ -43,6 +47,12 @@ public class StockBook {
         return ResponseEntity.ok(stock);
     }
     
+    /**
+     * Modification de la base de donnéee permettant de rajouter du stock
+     * @param isbn identifiant du livre
+     * @param quantity quantité que l'on souhaite rajouté
+     * @return état de la fonction
+     */
     public ResponseEntity<Object> addDataBase(String isbn, int quantity){
         try {
             Connection conn = new ConnectionManager().getConnection();
@@ -57,6 +67,12 @@ public class StockBook {
         return ResponseEntity.ok("Wholesaler order sent");
     }
     
+    /**
+     * Modification de la base de donnéee permettant de supprimer du stock
+     * @param isbn identifiant du livre
+     * @param quantity quantité que l'on souhaite enlever
+     * @return état de la fonction
+     */
     public ResponseEntity<Object> removeDataBase(String isbn, int quantity){
         try {
             Connection conn = new ConnectionManager().getConnection();
@@ -71,6 +87,12 @@ public class StockBook {
         return ResponseEntity.ok("Wholesaler order sent");
     }
     
+    /**
+     * Insertion dans la base de donnée d'une nouvelle information
+     * @param isbn identifiant du livre
+     * @param quantite quantité que l'on souhaite pour initialiser par défaut 0
+     * @return état de la statut
+     */
     public String InsertDataBase(String isbn,int quantite){
         try {
             Connection conn = new ConnectionManager().getConnection();
@@ -86,7 +108,10 @@ public class StockBook {
         }
     }
     
-    
+    /**
+     * Permet de supprimer la table de stockBook
+     * @return état de la fonction
+     */
     public String dropTableDataBase(){
         try {
             Connection conn = new ConnectionManager().getConnection();
@@ -102,6 +127,10 @@ public class StockBook {
         }
     }
     
+    /**
+     * Création de la base de donnée stockBook
+     * @return l'état de la fonction si réusssite où non.
+     */
     public String createDataBase(){
         try {
             Connection conn = new ConnectionManager().getConnection();
