@@ -36,15 +36,16 @@ public class StockBook {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 stock = rs.getInt(1);
-            }else{            
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erreur l'isbn n'existe pas "+isbn);
+            }else{      
+                System.out.println("Book not found "+isbn);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book not found "+isbn);
             }
             conn.close();
-             System.out.println("Quantité pour isbn : "+isbn +" est de : "+ stock);
+             System.out.println("Quantity for the isbn : "+isbn +" is : "+ stock);
             return ResponseEntity.ok(stock);
         } catch (SQLException ex) {
-             System.out.println("Problème erreur retourné" + ex.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage()+isbn);
+             System.out.println("Request error for book :"+isbn);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Request error for book :"+isbn);
         }
     }
     
@@ -62,11 +63,11 @@ public class StockBook {
             stmt.setString(2, isbn);
             stmt.executeUpdate();
             conn.close();
-            System.out.println("WholeSaler Order Sent");
+            System.out.println("WholeSaler Order Sent add "+ quantity +" for the book "+isbn);
             return ResponseEntity.ok("Wholesaler order sent");
         } catch (SQLException e) {
-            System.out.println("Problème dans order sent");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            System.out.println("Order sent probleme for book : "+isbn);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("order sent problem for book :"+isbn);
         }
     }
     
@@ -84,11 +85,11 @@ public class StockBook {
             stmt.setString(2, isbn);
             stmt.executeUpdate();
             conn.close();
-            System.out.println("Retrait de "+quantity + " pour le livre : "+isbn);
-            return ResponseEntity.ok("Retrait de "+quantity + " pour le livre : "+isbn);
+            System.out.println("Withdrawal of "+quantity + " for the book : "+isbn);
+            return ResponseEntity.ok("Withdrawal of "+quantity + " for the book : "+isbn);
         } catch (SQLException e) {
-            System.out.println("Erreur pour le retrait");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            System.out.println("Error in withdrawal");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error in withdrawal");
         }
     }
     
@@ -106,11 +107,11 @@ public class StockBook {
             insert.setInt(2, quantite);
             insert.executeQuery();
             conn.close();
-            System.out.println("Insertion d'un ligne dans la table StockBook");
-            return ResponseEntity.ok("ajout de la ligne pour le livre : "+isbn);
+            System.out.println("added the line for the book: "+isbn);
+            return ResponseEntity.ok("added the line for the book: "+isbn);
             } catch (SQLException e) {
-            System.out.println("Erreur dans l'ajout de la ligne");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("There was an error: " + e.getMessage());
+            System.out.println("Error adding line for the book :" +isbn);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error adding line for the book :" +isbn);
         }
     }
     
