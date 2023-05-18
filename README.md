@@ -5,4 +5,13 @@ Made By Thomas Da Silva Mendonca With Adrien Coudour
 Stock Service:
 
 * Appelé par le shoppingService
-* Renvoyé le nombre de livre en stock 
+* Renvoie le nombre de livre en stock 
+
+Lien vers le service : [Stock Service](https://stockservice-386816.ew.r.appspot.com/stock)
+
+Table créer pour ce service :
+
+|Class  | StockBook |
+|---    |---        |
+|String | isbn      |
+|int    | quantite  |
