@@ -18,15 +18,14 @@ public class StockServiceController {
     @GetMapping("/stock")
 	public String index() { 
             return "stock";
-	}
-        
-        
+	}   
+       
     /**
      * Cette méthode est appelé quand on a besoin de connaître le stock d'un livre.Une exception est levé si le livre récupéré est null.
      * @param isbn identifiant du livre
      * @return entier correspondant au nombre de livre pour l'isbn
      */
-    @GetMapping("/get/{isbn}")
+    @GetMapping("stock_service/get/book/{isbn}")
     public ResponseEntity<Object> getStockRequest(@PathVariable String isbn) { 
         StockBook stockbook = new StockBook();
         return stockbook.getStockDataBase(isbn);
@@ -34,11 +33,11 @@ public class StockServiceController {
     
     /**
      *
-     * @param isbn
-     * @param quantity
-     * @return
+     * @param isbn identifiant du livre
+     * @param quantity quantité que l'on souhaite rajouter
+     * @return Response de la requête
      */
-    @GetMapping("/add/{isbn}/{quantity}")
+    @GetMapping("stock_service/add/book/{isbn}/{quantity}")
     public ResponseEntity<Object> AddStockRequest(@PathVariable String isbn,@PathVariable int quantity){
         StockBook stockbook = new StockBook();
         return stockbook.addDataBase(isbn, quantity);
@@ -46,11 +45,11 @@ public class StockServiceController {
     
     /**
      * 
-     * @param isbn
-     * @param quantity
-     * @return 
+     * @param isbn identifiant du livre
+     * @param quantity quantité que l'on souhaite retirer 
+     * @return Response de la requête
      */
-    @GetMapping("/remove/{isbn}/{quantity}")
+    @GetMapping("stock_service/remove/book/{isbn}/{quantity}")
     public ResponseEntity<Object> RemoveStockRequest(@PathVariable String isbn,@PathVariable int quantity){
         StockBook stockbook = new StockBook();
         return stockbook.removeDataBase(isbn, quantity);

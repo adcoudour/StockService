@@ -42,8 +42,10 @@ public class StockBook {
                 stock = rs.getInt(1);
             }
             conn.close();
+             System.out.println("Quantité pour isbn"+isbn +"est de : "+ stock);
             return ResponseEntity.ok(stock);
         } catch (SQLException ex) {
+             System.out.println("Problème erreur retourné" + ex.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage()+isbn);
         }
     }
@@ -62,10 +64,12 @@ public class StockBook {
             stmt.setString(2, isbn);
             stmt.executeUpdate();
             conn.close();
+            System.out.println("WholeSaler Order Sent");
+            return ResponseEntity.ok("Wholesaler order sent");
         } catch (SQLException e) {
+            System.out.println("Problème dans order sent");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        return ResponseEntity.ok("Wholesaler order sent");
     }
     
     /**
@@ -82,10 +86,12 @@ public class StockBook {
             stmt.setString(2, isbn);
             stmt.executeUpdate();
             conn.close();
+            System.out.println("Retrait de "+quantity + " pour le livre : "+isbn);
+            return ResponseEntity.ok("Retrait de "+quantity + " pour le livre : "+isbn);
         } catch (SQLException e) {
+            System.out.println("Erreur pour le retrait");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        return ResponseEntity.ok("Wholesaler order sent");
     }
     
     /**
@@ -102,9 +108,10 @@ public class StockBook {
             insert.setString(2, isbn);
             
             conn.close();
+            System.out.println("Insertion d'un ligne dans la table StockBook");
             return "Insert";
             } catch (SQLException e) {
-            
+            System.out.println("Erreur dans l'ajout de la ligne");
             return "There was an error: " + e.getMessage();
         }
     }
@@ -138,7 +145,7 @@ public class StockBook {
                   
             Statement stmt = conn.createStatement();
 
-            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS StockBook (id INT AUTO_INCREMENT PRIMARY KEY,quantite INT, isbn VARCHAR(13))");
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS StockBook (id SERIAL PRIMARY KEY, quantite INT, isbn VARCHAR(13))");
             
             conn.close();
             return "ajout de StockBook a la base!";
