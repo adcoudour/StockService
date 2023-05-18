@@ -20,6 +20,22 @@ public class StockBook {
     public StockBook() {
     }
     
+    public ResponseEntity<Object> showDataBase(){
+        //try {
+        //    Connection conn = new ConnectionManager().getConnection();
+
+        //    Statement stmt = conn.createStatement("SELECT * from StockBook");
+        //    return stmt;
+            
+        //    conn.close();
+        //    return "Table StockBook Dropped";
+        //    } catch (SQLException e) {
+            
+        //    return "There was an error: " + e.getMessage();
+        //}
+        return null;
+    }
+    
     /**
      * Récupère la quantité en fonction d'un livre
      * @param isbn identifiant du livre
@@ -33,16 +49,12 @@ public class StockBook {
             PreparedStatement stmt = conn.prepareStatement("SELECT quantite FROM StockBook WHERE isbn=?");
             stmt.setString(1, isbn);
             ResultSet rs = stmt.executeQuery();
-            // Si le livre ne possède pas de ligne de stock on la crée.
-            if (rs == null){
-                // A voir si on le laisse
-                InsertDataBase(isbn, 0);
-            }else 
+             System.out.println(rs.next());
             if (rs.next()) {
-                stock = rs.getInt(1);
+                stock = rs.getInt(0);
             }
             conn.close();
-             System.out.println("Quantité pour isbn"+isbn +"est de : "+ stock);
+             System.out.println("Quantité pour isbn : "+isbn +" est de : "+ stock);
             return ResponseEntity.ok(stock);
         } catch (SQLException ex) {
              System.out.println("Problème erreur retourné" + ex.getMessage());
@@ -59,7 +71,7 @@ public class StockBook {
     public ResponseEntity<Object> addDataBase(String isbn, int quantity){
         try {
             Connection conn = new ConnectionManager().getConnection();
-            PreparedStatement stmt = conn.prepareStatement("UPDATE StockBook SET quantite = quantite + ? WHERE isbn=?");
+            PreparedStatement stmt = conn.prepareStatement("UPDATE StockBook SET quantite = quantite + ? WHERE isbn = ?");
             stmt.setInt(1, quantity);
             stmt.setString(2, isbn);
             stmt.executeUpdate();
@@ -100,19 +112,19 @@ public class StockBook {
      * @param quantite quantité que l'on souhaite pour initialiser par défaut 0
      * @return état de la statut
      */
-    public String InsertDataBase(String isbn,int quantite){
+    public ResponseEntity<Object> InsertDataBase(String isbn,int quantite){
         try {
             Connection conn = new ConnectionManager().getConnection();
-            PreparedStatement insert = conn.prepareStatement("INSERT INTO StockBook (quantite,isbn) VALUES (?,?)");
-            insert.setInt(1, quantite);
-            insert.setString(2, isbn);
+            PreparedStatement insert = conn.prepareStatement("INSERT INTO StockBook (isbn,quantite) VALUES (?,?)");
+            insert.setString(1, isbn);
+            insert.setInt(2, quantite);
             
             conn.close();
             System.out.println("Insertion d'un ligne dans la table StockBook");
-            return "Insert";
+            return ResponseEntity.ok("ajout de la ligne pour le livre : "+isbn);
             } catch (SQLException e) {
             System.out.println("Erreur dans l'ajout de la ligne");
-            return "There was an error: " + e.getMessage();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("There was an error: " + e.getMessage());
         }
     }
     
@@ -120,7 +132,7 @@ public class StockBook {
      * Permet de supprimer la table de stockBook
      * @return état de la fonction
      */
-    public String dropTableDataBase(){
+    public ResponseEntity<Object> dropTableDataBase(){
         try {
             Connection conn = new ConnectionManager().getConnection();
 
@@ -128,10 +140,9 @@ public class StockBook {
             stmt.executeUpdate("DROP TABLE IF EXISTS StockBook");
             
             conn.close();
-            return "Table StockBook Dropped";
+            return ResponseEntity.ok("Table StockBook Dropped");
             } catch (SQLException e) {
-            
-            return "There was an error: " + e.getMessage();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erreur dans le dropDataBase " + e.getMessage());
         }
     }
     
@@ -139,19 +150,19 @@ public class StockBook {
      * Création de la base de donnée stockBook
      * @return l'état de la fonction si réusssite où non.
      */
-    public String createDataBase(){
+    public ResponseEntity<Object> createDataBase(){
         try {
             Connection conn = new ConnectionManager().getConnection();
                   
             Statement stmt = conn.createStatement();
 
-            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS StockBook (id SERIAL PRIMARY KEY, quantite INT, isbn VARCHAR(13))");
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS StockBook ( quantite INT NOT NULL PRIMARY KEY, isbn VARCHAR(13))");
             
             conn.close();
-            return "ajout de StockBook a la base!";
+            return ResponseEntity.ok("Table StockBook Created");
         } catch (SQLException e) {
             
-          return "There was an error: " + e.getMessage();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erreur dans le création de la table " + e.getMessage());
         }
     }
 }

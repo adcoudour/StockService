@@ -19,7 +19,24 @@ public class StockServiceController {
 	public String index() { 
             return "stock";
 	}   
-       
+        
+    @GetMapping("stock_service/create/database/")
+    public ResponseEntity<Object> CreateDataBaseRequest(@PathVariable String isbn) { 
+        StockBook stockbook = new StockBook();
+        return stockbook.createDataBase();
+    }   
+    
+    @GetMapping("stock_service/drop/database/")
+    public ResponseEntity<Object> DropDataBaseRequest(@PathVariable String isbn) { 
+        StockBook stockbook = new StockBook();
+        return stockbook.dropTableDataBase();
+    }
+        
+    @GetMapping("stock_service/new/book/{isbn}")
+    public ResponseEntity<Object> newStockBookRequest(@PathVariable String isbn) { 
+        StockBook stockbook = new StockBook();
+        return stockbook.InsertDataBase(isbn,0);
+    }
     /**
      * Cette méthode est appelé quand on a besoin de connaître le stock d'un livre.Une exception est levé si le livre récupéré est null.
      * @param isbn identifiant du livre
