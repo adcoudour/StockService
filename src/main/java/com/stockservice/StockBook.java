@@ -51,6 +51,8 @@ public class StockBook {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 stock = rs.getInt(1);
+            }else{            
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erreur l'isbn n'existe pas "+isbn);
             }
             conn.close();
              System.out.println("Quantité pour isbn : "+isbn +" est de : "+ stock);
