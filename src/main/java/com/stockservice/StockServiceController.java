@@ -15,23 +15,37 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class StockServiceController {
+    
     @GetMapping("/stock")
 	public String index() { 
             return "stock";
 	}   
-        
+    
+    /**
+    * Création de stockBook et appel de StockBook  pour créer la table dans la base de donnée
+    * @return Une réponse de l'entité en fonction de la réussite où non de la création de la base de donnée 
+    */
     @GetMapping("stock_service/create/database")
     public ResponseEntity<Object> CreateDataBaseRequest() { 
         StockBook stockbook = new StockBook();
         return stockbook.createDataBase();
     }   
     
+    /**
+     * Création de stockBook et appel de la méthode de StockBook  pour supprimer la table dans la base de donnée
+     * @return Une réponse de l'entité en fonction de la réussite où non de la suppression de la base de donnée
+     */
     @GetMapping("stock_service/drop/database")
     public ResponseEntity<Object> DropDataBaseRequest() { 
         StockBook stockbook = new StockBook();
         return stockbook.dropTableDataBase();
     }
         
+    /**
+     * Création de stockBook et appel de la méthode de StockBook  pour ajouter une ligne dans la table de la base de donnnée
+     * @param isbn identifiant du livre
+     * @return Une réponse de l'entité en fonction de la réussite où non d'insertion dans la table StockBook
+     */
     @GetMapping("stock_service/new/book/{isbn}")
     public ResponseEntity<Object> newStockBookRequest(@PathVariable String isbn) { 
         StockBook stockbook = new StockBook();

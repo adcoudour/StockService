@@ -20,24 +20,9 @@ public class StockBook {
     public StockBook() {
     }
     
-    public ResponseEntity<Object> showDataBase(){
-        //try {
-        //    Connection conn = new ConnectionManager().getConnection();
-
-        //    Statement stmt = conn.createStatement("SELECT * from StockBook");
-        //    return stmt;
-            
-        //    conn.close();
-        //    return "Table StockBook Dropped";
-        //    } catch (SQLException e) {
-            
-        //    return "There was an error: " + e.getMessage();
-        //}
-        return null;
-    }
-    
     /**
      * Récupère la quantité en fonction d'un livre
+     * Si le livre n'existe pas dans la base renvoie une erreur où si il y a eu une erreur sur la requête
      * @param isbn identifiant du livre
      * @return ResponseEntity contenant si la fonction à été une réussite où non.
      */
@@ -131,7 +116,7 @@ public class StockBook {
     
     /**
      * Permet de supprimer la table de stockBook
-     * @return état de la fonction
+     * @return réussite où non de la suppression
      */
     public ResponseEntity<Object> dropTableDataBase(){
         try {
@@ -141,15 +126,17 @@ public class StockBook {
             stmt.executeUpdate("DROP TABLE IF EXISTS StockBook");
             
             conn.close();
+            System.out.println("Table StockBook Dropped");
             return ResponseEntity.ok("Table StockBook Dropped");
             } catch (SQLException e) {
+            System.out.println("Erreur dans le dropDataBase");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erreur dans le dropDataBase " + e.getMessage());
         }
     }
     
     /**
      * Création de la base de donnée stockBook
-     * @return l'état de la fonction si réusssite où non.
+     * @return réussite où non de la création
      */
     public ResponseEntity<Object> createDataBase(){
         try {
@@ -160,9 +147,10 @@ public class StockBook {
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS StockBook (isbn VARCHAR(13) PRIMARY KEY NOT NULL, quantite INT)");
             
             conn.close();
+            System.out.println("Table StockBook Created");
             return ResponseEntity.ok("Table StockBook Created");
         } catch (SQLException e) {
-            
+            System.out.println("Erreur dans le création de la table");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erreur dans le création de la table " + e.getMessage());
         }
     }
