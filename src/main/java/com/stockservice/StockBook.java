@@ -49,9 +49,8 @@ public class StockBook {
             PreparedStatement stmt = conn.prepareStatement("SELECT quantite FROM StockBook WHERE isbn=?");
             stmt.setString(1, isbn);
             ResultSet rs = stmt.executeQuery();
-             System.out.println(rs.next());
             if (rs.next()) {
-                stock = rs.getInt(0);
+                stock = rs.getInt(1);
             }
             conn.close();
              System.out.println("Quantité pour isbn : "+isbn +" est de : "+ stock);
@@ -115,10 +114,10 @@ public class StockBook {
     public ResponseEntity<Object> InsertDataBase(String isbn,int quantite){
         try {
             Connection conn = new ConnectionManager().getConnection();
-            PreparedStatement insert = conn.prepareStatement("INSERT INTO StockBook (isbn,quantite) VALUES (?,?)");
+            PreparedStatement insert = conn.prepareStatement("INSERT INTO StockBook(isbn,quantite) VALUES (?,?)");
             insert.setString(1, isbn);
             insert.setInt(2, quantite);
-            
+            insert.executeQuery();
             conn.close();
             System.out.println("Insertion d'un ligne dans la table StockBook");
             return ResponseEntity.ok("ajout de la ligne pour le livre : "+isbn);
@@ -156,7 +155,7 @@ public class StockBook {
                   
             Statement stmt = conn.createStatement();
 
-            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS StockBook ( quantite INT NOT NULL PRIMARY KEY, isbn VARCHAR(13))");
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS StockBook (isbn VARCHAR(13) PRIMARY KEY NOT NULL, quantite INT)");
             
             conn.close();
             return ResponseEntity.ok("Table StockBook Created");

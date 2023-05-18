@@ -20,14 +20,14 @@ public class StockServiceController {
             return "stock";
 	}   
         
-    @GetMapping("stock_service/create/database/")
-    public ResponseEntity<Object> CreateDataBaseRequest(@PathVariable String isbn) { 
+    @GetMapping("stock_service/create/database")
+    public ResponseEntity<Object> CreateDataBaseRequest() { 
         StockBook stockbook = new StockBook();
         return stockbook.createDataBase();
     }   
     
-    @GetMapping("stock_service/drop/database/")
-    public ResponseEntity<Object> DropDataBaseRequest(@PathVariable String isbn) { 
+    @GetMapping("stock_service/drop/database")
+    public ResponseEntity<Object> DropDataBaseRequest() { 
         StockBook stockbook = new StockBook();
         return stockbook.dropTableDataBase();
     }
