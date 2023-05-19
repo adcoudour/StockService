@@ -23,10 +23,9 @@ public class ConnectionManager {
      * @throws SQLException Erreur SQL si il y a eu une erreur de connexion à la base
      */
     public java.sql.Connection getConnection() throws SQLException {
-        Dotenv dotenv = Dotenv.load();
-        String dbUrl = dotenv.get("DATABASE_URL");
-        String username = dotenv.get("DATABASE_USERNAME");
-        String password = dotenv.get("DATABASE_PASSWORD");
+        String dbUrl = "jdbc:postgresql://ec2-34-193-110-25.compute-1.amazonaws.com:5432/d1jltmbva2bnt0";
+        String username = "phvzkuazxuyeoa";
+        String password = "caf84127a1b42ab4cc9c92d1860fd04b610f934efeeefb7a7fd6a4b177731872";
         return DriverManager.getConnection(dbUrl, username, password);
     }
 }
