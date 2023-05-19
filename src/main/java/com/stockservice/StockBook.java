@@ -49,6 +49,29 @@ public class StockBook {
         }
     }
     
+    public boolean IsbnExiste(String isbn){
+                int stock = 0;
+         try {
+            Connection conn = new ConnectionManager().getConnection();
+            createDataBase();
+            PreparedStatement stmt = conn.prepareStatement("SELECT quantite FROM StockBook WHERE isbn=?");
+            stmt.setString(1, isbn);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                stock = rs.getInt(1);
+            }else{      
+                System.out.println("Book not found "+isbn);
+                return false;
+            }
+            conn.close();
+             System.out.println("Quantity for the isbn : "+isbn +" is : "+ stock);
+            return true;
+        } catch (SQLException ex) {
+             System.out.println("Request error for book :"+isbn);
+             return false;
+        }
+    }
+    
     /**
      * Modification de la base de donnéee permettant de rajouter du stock
      * @param isbn identifiant du livre
@@ -57,6 +80,10 @@ public class StockBook {
      */
     public ResponseEntity<Object> addDataBase(String isbn, int quantity){
         try {
+            if (!IsbnExiste(isbn)){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book not found :"+isbn);
+            }
+            
             Connection conn = new ConnectionManager().getConnection();
             PreparedStatement stmt = conn.prepareStatement("UPDATE StockBook SET quantite = quantite + ? WHERE isbn = ?");
             stmt.setInt(1, quantity);
@@ -79,6 +106,9 @@ public class StockBook {
      */
     public ResponseEntity<Object> removeDataBase(String isbn, int quantity){
         try {
+            if (!IsbnExiste(isbn)){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book not found :"+isbn);
+            }
             Connection conn = new ConnectionManager().getConnection();
             PreparedStatement stmt = conn.prepareStatement("UPDATE StockBook SET quantite = quantite - ? WHERE isbn=?");
             stmt.setInt(1, quantity);
@@ -101,6 +131,9 @@ public class StockBook {
      */
     public ResponseEntity<Object> InsertDataBase(String isbn,int quantite){
         try {
+            if (IsbnExiste(isbn)){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book already exist :"+isbn);
+            }
             Connection conn = new ConnectionManager().getConnection();
             PreparedStatement insert = conn.prepareStatement("INSERT INTO StockBook(isbn,quantite) VALUES (?,?)");
             insert.setString(1, isbn);
